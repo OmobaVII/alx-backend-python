@@ -5,6 +5,7 @@ from unittest.mock import patch, Mock, PropertyMock, call
 from parameterized import parameterized
 from client import GithubOrgClient
 import client
+from utils import memoize
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -21,3 +22,13 @@ class TestGithubOrgClient(unittest.TestCase):
         x = GithubOrgClient(org)
         self.assertEqual(x.org, output)
         getpatch.assert_called_once_with("https://api.github.com/orgs/"+org)
+
+    def test_public_repos_url(self):
+        """ test the _public_repos_url function of client """
+        output = "www.yes.com"
+        payload = {"repos_url": output}
+        mock = 'client.GithubOrgClient.org'
+        with patch(mock, PropertyMock(return_value=payload)):
+            r = GithubOrgClient("x")
+            self.assertEqual(r._public_repos_url, output)
+
