@@ -2,10 +2,11 @@
 """ Tests for the client module"""
 import unittest
 from unittest.mock import patch, Mock, PropertyMock, call
-from parameterized import parameterized
+from parameterized import parameterized, parameterized_class
 from client import GithubOrgClient
 import client
 from utils import memoize
+from fixtures import TEST_PAYLOAD
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -89,3 +90,13 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     def tearDownClass(cls):
         """ unprepare for testing """
         cls.get_patcher.stop()
+
+    def test_public_repos(self):
+        """ test for the function public_repos in client """
+        y = GithubOrgClient("a")
+        self.assertEqual(y.org, self.org_payload)
+        self.assertEqual(y.repos_payload, self.repos_payload)
+        self.assertEqual(y.public_repos(), self.expected_repos)
+        self.assertEqual(y.public_repos("UNKNOWN"), [])
+        self.get.assert_has_calls([call("https://api.github.com/orgs/a"),
+                                   call(self.org_payload["repos_url"])])
