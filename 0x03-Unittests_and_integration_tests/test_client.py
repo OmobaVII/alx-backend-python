@@ -78,14 +78,14 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         repos_mock.json = Mock(return_value=repos)
         cls.repos_mock = repos_mock
 
-        cls.getpatch = patch('requests.get')
-        cls.get = cls.getpatch.start()
+        cls.get_patcher = patch('requests.get')
+        cls.get = cls.get_patcher.start()
 
         options = {cls.org_payload["repos_url"]: repos_mock}
-        cls.get.sideeffect = lambda y: options.get(y, org_mock)
+        cls.get.side_effect = lambda y: options.get(y, org_mock)
     
     """ a class method that destroys the test environment """
     @classmethod
     def tearDownClass(cls):
         """ unprepare for testing """
-        cls.getpatch.stop()
+        cls.get_patcher.stop()
