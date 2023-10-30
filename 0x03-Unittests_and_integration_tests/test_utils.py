@@ -10,6 +10,7 @@ from utils import access_nested_map, get_json, memoize
 
 class TestAccessNestedMap(unittest.TestCase):
     """tests for the function access_nested_map"""
+    """decorator function"""
     @parameterized.expand([
         ({"a": 1}, ("a",), 1),
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
