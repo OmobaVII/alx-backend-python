@@ -48,4 +48,3 @@ class TestGithubOrgClient(unittest.TestCase):
             self.assertEqual(x.public_repos(45), [])
             get_jsonmock.assert_called_once_with("www.yes.com")
             yes.assert_called_once_with()
-
