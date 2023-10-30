@@ -57,3 +57,35 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_has_license(self, repo, license, return_out):
         """ test the has license function in client """
         self.assertEqual(GithubOrgClient.has_license(repo, license), return_out)
+
+""" a decorator that decorates the TestIntegrationGithubOrgClient class """
+@parameterized_class(
+    ('org_payload', 'repos_payload', 'expected_repos', 'apache2_repos'),
+    TEST_PAYLOAD
+)
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """ to test the public_repos function for client """
+    """ a class method that setups the test environment """
+    @classmethod
+    def setUpClass(cls):
+        """ creates an environment for testing """
+        org = TEST_PAYLOAD[0][0]
+        repos = TEST_PAYLOAD[0][1]
+        org_mock = Mock()
+        org_mock.json = Mock(return_value=org)
+        cls.org_mock = org_mock
+        repos_mock = Mock()
+        repos_mock.json = Mock(return_value=repos)
+        cls.repos_mock = repos_mock
+
+        cls.getpatch = patch('requests.get')
+        cls.get = cls.getpatch.start()
+
+        options = {cls.org_payload["repos_url"]: repos_mock}
+        cls.get.sideeffect = lambda y: options.get(y, org_mock)
+    
+    """ a class method that destroys the test environment """
+    @classmethod
+    def tearDownClass(cls):
+        """ unprepare for testing """
+        cls.getpatch.stop()
