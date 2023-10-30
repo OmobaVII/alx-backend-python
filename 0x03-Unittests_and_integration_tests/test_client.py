@@ -55,11 +55,11 @@ class TestGithubOrgClient(unittest.TestCase):
         ({'license': {'key': 'my_license'}}, 'my_license', True),
         ({'license': {'key': 'other_license'}}, 'my_license', False)
     ])
-    def test_has_license(self, repo, license, return_out):
+    def test_has_license(self, repo, license, outcome):
         """ test the has license function in client """
-        self.assertEqual(GithubOrgClient.has_license(repo, license), return_out)
+        self.assertEqual(GithubOrgClient.has_license(repo, license), outcome)
 
-""" a decorator that decorates the TestIntegrationGithubOrgClient class """
+
 @parameterized_class(
     ('org_payload', 'repos_payload', 'expected_repos', 'apache2_repos'),
     TEST_PAYLOAD
@@ -84,7 +84,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
         options = {cls.org_payload["repos_url"]: repos_mock}
         cls.get.side_effect = lambda y: options.get(y, org_mock)
-    
+
     """ a class method that destroys the test environment """
     @classmethod
     def tearDownClass(cls):
