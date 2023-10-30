@@ -59,8 +59,8 @@ class TestMemoize(unittest.TestCase):
             def a_property(self):
                 """ the a_property test """
                 return self.a_method()
-            with patch.object(TestMethod, "a_method") as testmethod:
-                test_method = TestMethod()
-                test_method.a_property
-                test_method.a_property
-                testmethod.assert_called_once
+        with patch.object(TestMethod, "a_method") as testmethod:
+            test_method = TestMethod()
+            test_method.a_property
+            test_method.a_property
+            testmethod.assert_called_once
