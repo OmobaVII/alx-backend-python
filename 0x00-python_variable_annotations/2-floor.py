@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-    This is a module that provides a function `floor` that finds the floor of a float.
+    This module provides a function `floor` that finds the floor of a float.
 """
 import math
 
